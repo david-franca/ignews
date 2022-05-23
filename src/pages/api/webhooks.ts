@@ -23,8 +23,8 @@ export const config = {
 
 const relevantEvents = new Set([
   "checkout.session.completed",
-  "customer.subscriptions.updated",
-  "customer.subscriptions.deleted",
+  "customer.subscription.updated",
+  "customer.subscription.deleted",
 ]);
 
 const Webhooks = async (
@@ -51,7 +51,6 @@ const Webhooks = async (
 
     if (relevantEvents.has(type)) {
       try {
-        console.log(type);
         switch (type) {
           case "checkout.session.completed":
             const checkoutSession = event.data
@@ -68,7 +67,8 @@ const Webhooks = async (
             const subscription = event.data.object as Stripe.Subscription;
             await saveSubscription(
               subscription.id,
-              subscription.customer.toString()
+              subscription.customer.toString(),
+              false
             );
             break;
 
