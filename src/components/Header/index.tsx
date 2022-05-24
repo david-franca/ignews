@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { SignInButton } from "../SignInButton";
 
+import { ActiveLink } from "../ActiveLink";
+import { SignInButton } from "../SignInButton";
 import styles from "./styles.module.scss";
 
 export const Header = () => {
@@ -9,10 +10,12 @@ export const Header = () => {
       <div className={styles.headerContent}>
         <Image src="/images/logo.svg" alt="ig.news" width={110} height={31} />
         <nav>
-          <a href="#" className={styles.active}>
-            Home
-          </a>
-          <a href="#">Post</a>
+          <ActiveLink href="/" activeClassName={styles.active}>
+            <a>Home</a>
+          </ActiveLink>
+          <ActiveLink href="/posts" prefetch activeClassName={styles.active}>
+            <a>Post</a>
+          </ActiveLink>
         </nav>
         <SignInButton />
       </div>
