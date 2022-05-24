@@ -1,4 +1,5 @@
 import { GetStaticProps } from "next";
+import Link from "next/link";
 
 import * as prismicH from "@prismicio/helpers";
 
@@ -17,6 +18,12 @@ interface PostProps {
   posts: Post[];
 }
 
+interface IPrismicData {
+  type: string;
+  text: string;
+  spans: Array<any>;
+}
+
 const Posts = ({ posts }: PostProps) => {
   return (
     <>
@@ -24,11 +31,13 @@ const Posts = ({ posts }: PostProps) => {
       <main className={styles.container}>
         <div className={styles.posts}>
           {posts.map((post) => (
-            <a href="#" key={post.slug}>
-              <time>{post.updatedAt}</time>
-              <strong>{post.title}</strong>
-              <p>{post.excerpt}</p>
-            </a>
+            <Link key={post.slug} href={`/post/${post.slug}`}>
+              <a>
+                <time>{post.updatedAt}</time>
+                <strong>{post.title}</strong>
+                <p>{post.excerpt}</p>
+              </a>
+            </Link>
           ))}
         </div>
       </main>
@@ -44,9 +53,7 @@ export const getStaticProps: GetStaticProps = async ({ previewData }) => {
     pageSize: 100,
   });
 
-  const getExcerpt = (
-    content: { type: string; text: string; spans: any[] }[]
-  ) => {
+  const getExcerpt = (content: IPrismicData[]) => {
     const text = content
       .filter((slice) => slice.type === "paragraph")
       .map((slice) => slice.text)
